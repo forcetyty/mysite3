@@ -26,6 +26,7 @@ public class GuestBookController {
 		System.out.println("list 호출");
 		List<GuestbookVo> list = new ArrayList<GuestbookVo>();
 		list = guestBookService.getList();
+		
 		model.addAttribute("list", list);
 		
 		return "guestbook/list";
