@@ -12,10 +12,59 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.mysite.vo.GuestbookVo;
+import kr.co.itcen.mysite.vo.UserVo;
 
 
 @Repository
 public class GuestbookDao {
+	
+		// 데이터베이스에 값을 넣는 기능
+		public void updateUser(UserVo vo) {
+
+			Connection connection = null;
+			PreparedStatement pstmt = null;
+
+			Statement stmt = null;
+			ResultSet rs = null;
+
+			try {
+
+				connection = getConnection();
+
+				String sql = "update user set name = ?, password= ?, gender = ? where no = ?";
+				pstmt = connection.prepareStatement(sql);
+
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getPassword());
+				pstmt.setString(3, vo.getGender());
+				pstmt.setLong(4, vo.getNo());
+
+				pstmt.executeUpdate();
+
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (stmt != null) {
+						stmt.close();
+					}
+
+					if (pstmt != null) {
+						pstmt.close();
+					}
+
+					if (connection != null) {
+						connection.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
 	
 	//데이터베이스에 값을 넣는 기능
 	public Boolean insert(GuestbookVo vo) {

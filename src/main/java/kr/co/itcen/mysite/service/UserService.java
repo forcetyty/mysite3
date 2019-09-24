@@ -8,7 +8,7 @@ import kr.co.itcen.mysite.vo.UserVo;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserDao userDao;
 
@@ -22,6 +22,14 @@ public class UserService {
 		return userDao.get(vo);
 	}
 	
-	
+	//회원정보를 가져오는 기능
+	public UserVo selectList(Long memberNo) {
+		return userDao.selectUpdate(memberNo);
+	}
+
+	//회원정보수정
+	public void updateList(UserVo vo) {
+		userDao.updateUser(vo);
+	}
 
 }

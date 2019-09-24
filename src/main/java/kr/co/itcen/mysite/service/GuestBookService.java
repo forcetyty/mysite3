@@ -25,13 +25,18 @@ public class GuestBookService {
 		return result;	
 	}
 	
-	
+	//방명록 입력하는 Service
 	public void insertAddList(GuestbookVo vo) {
 		guestbookDao.insert(vo);
 	}
 	
+	//방명록 삭제하는 Service
 	public void deleteList(GuestbookVo vo) {
 		guestbookDao.delete(vo);
 	}
+	
+	
+	
+	
 
 }

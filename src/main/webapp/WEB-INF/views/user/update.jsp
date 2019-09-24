@@ -15,28 +15,24 @@
 <body>
 	<div id="container">
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
-
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="updateform" method="post"
-					action="${pageContext.servletContext.contextPath }/user">
-					<input type='hidden' name='a' value='update' />
-
+				<form id="join-form" name="updateform" method="post" action="${pageContext.servletContext.contextPath }/user/update">
+					<!-- <input type='hidden' name='a' value='update' /> -->
 					<%-- <input type="hidden" name="no" value="<%=vo.getNo()%>"> --%>
-					<input type="hidden" name="no" value="${auth.no }"> <label
-						class="block-label" for="name">이름</label> <input id="name"
-						name="name" type="text" value="${auth.name }"> <label
-						class="block-label" for="email">이메일</label>
-					<h4>${auth.email }</h4>
+					 
+					<label class="block-label" for="name">이름</label> 
+					<input id="name" name="name" type="text" value="${authUser.name }"> 
+					<label class="block-label" for="email">이메일</label>
+					<h4>${authUser.email }</h4>
 
-					<label class="block-label">패스워드</label> <input name="password"
-						type="password" value="">
+					<label class="block-label">패스워드</label> 
+					<input name="password" type="password" value="">
 					<fieldset>
-
 						<legend>성별</legend>
 						<c:choose>
-							<c:when test="${'female' eq vo.gender }">
+							<c:when test="${'female' eq authUser.gender }">
 								<label>여</label>
 								<input type="radio" name="gender" value="female"
 									checked="checked">
@@ -44,18 +40,18 @@
 								<input type="radio" name="gender" value="male">
 							</c:when>
 
-							<c:when test="${'male' eq vo.gender }">
+							<c:when test="${'male' eq authUser.gender }">
 								<label>여</label>
 								<input type="radio" name="gender" value="female">
 								<label>남</label>
 								<input type="radio" name="gender" value="male" checked="checked">
 							</c:when>
 						</c:choose>
-
 					</fieldset>
 
 					<input type="submit" value="수정하기">
 				</form>
+				
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp" />

@@ -42,39 +42,53 @@ public class UserController {
 		return "user/login";
 	}
 
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(UserVo vo, HttpSession session, Model model) {
 		UserVo userVo = userService.getUser(vo);
-		
+
 		if (userVo == null) {
 			model.addAttribute("result", "fail");
 			return "user/loing";
 		}
-		
-		//로그인 처리
+
+		// 로그인 처리
 		session.setAttribute("authUser", userVo);
 		return "redirect:/";
 	}
-	
-	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
-		//접근 제어
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser != null) {
+		// 접근 제어
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if (authUser != null) {
 			session.removeAttribute("authUser");
 			session.invalidate();
 		}
 		return "redirect:/";
 	}
+
 	
-	@RequestMapping(value="/update", method = RequestMethod.POST)
-	public String update(UserVo vo, HttpSession session) {
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String updateForm(UserVo vo, HttpSession session) {
 		System.out.println("회원정보 수정");
 		
-		return null;
+		// 접근 제어
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		userService.selectList(authUser.getNo());
 		
+		//UserVo userVo = userService.getUser(authUser);
+		//System.out.println("이름 :" +userVo.getName() + "이메일 :"+userVo.getEmail());
+		
+		//UserVo userVo =  userService.getUser(authUser);
+		
+		//System.out.println("user 이름 :" +authUser.getName());
+		//System.out.println("no 이름 :" +authUser.getNo());
+		
+		//userService.updateList(authUser);
+		
+		//UserVo userVo = userService.getUser(vo);
+		
+		return "user/update";
 	}
-	
+
 }
