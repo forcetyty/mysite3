@@ -9,6 +9,7 @@ import java.sql.Statement;
 
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.mysite.exception.UserDaoException;
 import kr.co.itcen.mysite.vo.UserVo;
 
 @Repository
@@ -116,7 +117,7 @@ public class UserDao {
 
 	}
 
-	public Boolean insert(UserVo vo) {
+	public Boolean insert(UserVo vo) throws UserDaoException{
 		Boolean result = false;
 
 		Connection connection = null;
@@ -128,7 +129,7 @@ public class UserDao {
 		try {
 			connection = getConnection();
 
-			String sql = "insert into user values(null, ?, ?, ?, ?, now())";
+			String sql = "inser into user values(null, ?, ?, ?, ?, now())";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getEmail());
@@ -145,7 +146,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			throw new UserDaoException(e.getMessage());
 		} finally {
 			try {
 				if (rs != null) {
@@ -174,11 +175,11 @@ public class UserDao {
 		return null;
 	}
 
-	public UserVo get(UserVo vo) {
+	public UserVo get(UserVo vo) throws UserDaoException{
 		return get(vo.getEmail(), vo.getPassword());
 	}
 
-	public UserVo get(String email, String password) {
+	public UserVo get(String email, String password) throws UserDaoException {
 		UserVo result = null;
 
 		Connection connection = null;
@@ -204,7 +205,9 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			//예외처리에 대한 별도의 처리!!!
+			//이렇게 예외를 처리함으로써, 예외를 일방적으로 회피하는게 아니라 다른 곳으로 돌려서 처리하는 것이다.
+			throw new UserDaoException(e.getMessage());
 		} finally {
 			try {
 				if (rs != null) {

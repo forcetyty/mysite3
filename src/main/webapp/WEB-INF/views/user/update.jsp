@@ -18,7 +18,7 @@
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="updateform" method="post" action="${pageContext.servletContext.contextPath }/user/update">
+				<form id="join-form" name="updateform" method="post" action="${pageContext.servletContext.contextPath }/user/updateProcess">
 					<!-- <input type='hidden' name='a' value='update' /> -->
 					<%-- <input type="hidden" name="no" value="<%=vo.getNo()%>"> --%>
 					 

@@ -5,10 +5,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.co.itcen.mysite.exception.UserDaoException;
 import kr.co.itcen.mysite.service.UserService;
 import kr.co.itcen.mysite.vo.UserVo;
 
@@ -75,20 +77,21 @@ public class UserController {
 		// 접근 제어
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		userService.selectList(authUser.getNo());
-		
-		//UserVo userVo = userService.getUser(authUser);
-		//System.out.println("이름 :" +userVo.getName() + "이메일 :"+userVo.getEmail());
-		
-		//UserVo userVo =  userService.getUser(authUser);
-		
-		//System.out.println("user 이름 :" +authUser.getName());
-		//System.out.println("no 이름 :" +authUser.getNo());
-		
-		//userService.updateList(authUser);
-		
-		//UserVo userVo = userService.getUser(vo);
-		
+				
 		return "user/update";
 	}
+	
+	@RequestMapping(value = "/updateProcess")
+	public String update(@ModelAttribute UserVo vo) {
+		
+		
+		return null;
+	}
+	
+//	@ExceptionHandler(UserDaoException.class)
+//	public String handlerException() {
+//		
+//		return "error/exception";
+//	}
 
 }
