@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.sun.istack.internal.logging.Logger;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	//AOP를 실행시키는 모듈 - Advice
@@ -25,6 +27,8 @@ public class GlobalExceptionHandler {
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));
 		System.out.println(errors.toString());
+		
+		// Logger.eroor(errors.toString());
 		
 		//2.안내페이지
 		request.setAttribute("uri", request.getRequestURI());
