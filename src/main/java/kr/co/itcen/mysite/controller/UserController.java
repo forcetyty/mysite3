@@ -81,12 +81,12 @@ public class UserController {
 		return "user/update";
 	}
 	
-	@RequestMapping(value = "/updateProcess")
-	public String update(@ModelAttribute UserVo vo) {
-		
-		
-		return null;
-	}
+//	@RequestMapping(value = "/updateProcess")
+//	public String update(@ModelAttribute UserVo vo) {
+//		userService.updateList(vo);
+//		
+//		return "user/update" + vo.getNo();
+//	}
 	
 //	@ExceptionHandler(UserDaoException.class)
 //	public String handlerException() {

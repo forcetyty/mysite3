@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.mysite.vo.GuestbookVo;
@@ -17,6 +20,9 @@ import kr.co.itcen.mysite.vo.UserVo;
 
 @Repository
 public class GuestbookDao {
+		
+		@Autowired
+		private	DataSource dataSource;
 	
 		// 데이터베이스에 값을 넣는 기능
 		public void updateUser(UserVo vo) {
@@ -29,7 +35,7 @@ public class GuestbookDao {
 
 			try {
 
-				connection = getConnection();
+				connection = dataSource.getConnection();
 
 				String sql = "update user set name = ?, password= ?, gender = ? where no = ?";
 				pstmt = connection.prepareStatement(sql);
@@ -77,7 +83,7 @@ public class GuestbookDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 			
 			String sql = "insert into guestbook values(null, ?, ?, ?, now());";
 			pstmt = connection.prepareStatement(sql);
@@ -127,7 +133,7 @@ public class GuestbookDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			String sql = "select no,name,contents,date_format(reg_date,'%Y-%m-%d %h:%i:%s') from guestbook";
 			pstmt = connection.prepareStatement(sql);
@@ -177,7 +183,7 @@ public class GuestbookDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			String sql = "delete from guestbook where no = ? and password = ?";
 			
@@ -203,21 +209,22 @@ public class GuestbookDao {
 		}
 	}
 
-	// DataBase와 연결시키는 객체
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			String url = "jdbc:mariadb://192.168.1.81:3306/webdb?characterEncoding=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("Fail to Loading Driver:" + e);
-		}
-
-		return connection;
-	}
+//  설정해주었기 때문에 필요가 없다.
+//	// DataBase와 연결시키는 객체
+//	private Connection getConnection() throws SQLException {
+//		Connection connection = null;
+//
+//		try {
+//			Class.forName("org.mariadb.jdbc.Driver");
+//
+//			String url = "jdbc:mariadb://192.168.1.81:3306/webdb?characterEncoding=utf8";
+//			connection = DriverManager.getConnection(url, "webdb", "webdb");
+//
+//		} catch (ClassNotFoundException e) {
+//			System.out.println("Fail to Loading Driver:" + e);
+//		}
+//
+//		return connection;
+//	}
 
 }

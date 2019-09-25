@@ -9,6 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import kr.co.itcen.mysite.vo.BoardCountVo;
 import kr.co.itcen.mysite.vo.BoardSerchVo;
 import kr.co.itcen.mysite.vo.BoardUserListVo;
@@ -16,6 +20,9 @@ import kr.co.itcen.mysite.vo.BoardViewVo;
 import kr.co.itcen.mysite.vo.BoardVo;
 
 public class BoardDao {
+	
+	@Autowired
+	private	DataSource dataSource;
 	
 	
 	// 전체 게시글의 수를 가져오는 쿼리
@@ -27,7 +34,7 @@ public class BoardDao {
 		BoardCountVo vo = new BoardCountVo();
 		
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 		
 			String sql = "select count(*) as num from board where status = 1";
 			pstmt = connection.prepareStatement(sql);
@@ -68,7 +75,7 @@ public class BoardDao {
 			BoardCountVo vo = new BoardCountVo();
 			
 			try {
-				connection = getConnection();
+				connection = dataSource.getConnection();
 			
 				String sql = "select count(*) as num from board where status = 1 and like (board = ? or title = ?)";
 				pstmt = connection.prepareStatement(sql);
@@ -115,7 +122,7 @@ public class BoardDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 			
 			//아래 쿼리를 통해서 리스트에 답글과 댓글을 표시
 			String sql = "select b.no, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'), b.g_no, b.o_no, b.depth from user as u, board as b where u.no = b.user_no and b.status = 1  and ( b.title like ? or b.contents like ? ) order by b.g_no desc, b.o_no asc";
@@ -179,7 +186,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null; // 운반객체
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 삭제되는 게식글에 대한 항목
 			String sql = "update board set status = false where no = ?";
@@ -212,7 +219,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null; // 운반객체
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 			// 업데이트 되는 항목 hit
 			String sql = "update board set hit = hit + 1 where no = ?";
 
@@ -251,7 +258,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null; // 운반객체
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 			// 업데이트 되는 항목 title / contents / reg_date
 			String sql = "update board set title = ?, contents = ?, reg_date = now() where no = ?";
 			pstmt = connection.prepareStatement(sql);
@@ -290,7 +297,7 @@ public class BoardDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			/// 제목, 글쓴이, 메일, 등록일, 조회수, 내용
 			// 이 Dao를 통해서 그룹번호, 답글순서, 깊이까지 가져온다
@@ -362,7 +369,7 @@ public class BoardDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 			
 			//아래 쿼리를 통해서 리스트에 답글과 댓글을 표시
 			String sql = "select b.no, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') , b.g_no, b.o_no, b.depth from user as u, board as b where u.no = b.user_no and b.status = 1 order by b.g_no desc, b.o_no asc limit ?, ?";
@@ -431,7 +438,7 @@ public class BoardDao {
 
 		try {
 		
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			String sql = "insert into board values(null, ?, ?, 0, now(), (select ifnull(max(bo.g_no)+1, 1) from board as bo), 0, 0, ?, ?)";
 
@@ -473,21 +480,21 @@ public class BoardDao {
 		return result;
 	}
 
-	// DataBase와 연결시키는 객체
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			String url = "jdbc:mariadb://192.168.1.81:3306/webdb?characterEncoding=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("Fail to Loading Driver:" + e);
-		}
-
-		return connection;
-	}
+//	// DataBase와 연결시키는 객체
+//	private Connection getConnection() throws SQLException {
+//		Connection connection = null;
+//
+//		try {
+//			Class.forName("org.mariadb.jdbc.Driver");
+//
+//			String url = "jdbc:mariadb://192.168.1.81:3306/webdb?characterEncoding=utf8";
+//			connection = DriverManager.getConnection(url, "webdb", "webdb");
+//
+//		} catch (ClassNotFoundException e) {
+//			System.out.println("Fail to Loading Driver:" + e);
+//		}
+//
+//		return connection;
+//	}
 
 }
