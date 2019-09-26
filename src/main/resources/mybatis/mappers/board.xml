@@ -15,4 +15,13 @@
 ]]>
 </select>
 
+
+<insert id="insertBoard" parameterType="BoardVo">
+<![CDATA[
+	insert into board 
+	values(null, #{title }, #{contents }, 0, now(), 
+	(select ifnull(max(bo.g_no)+1, 1) from board as bo), 0, 0, #{user_no }, #{status })
+]]>
+</insert>
+
 </mapper>

@@ -367,6 +367,7 @@ public class BoardDao {
 
 	}
 
+	// MyBatis 적용완료!!!
 	// 게시판에 글을 출력해주는 Dao
 	public List<BoardUserListVo> getList(int start, int end) {
 		Map<String, Integer> serch = new HashMap<String, Integer>();
@@ -376,62 +377,71 @@ public class BoardDao {
 		
 		List<BoardUserListVo> result = sqlSession.selectList("board.getList",serch);
 		return result;
-
 	}
 
 	// 원 게시글을 등록하는 Dao
 	// 답글과 댓글 구현 Dao는 Reply Dao에 구현되어 있음
-	public Boolean insertBoardDao(BoardVo bvo) {
+	public Boolean insertBoardDao(BoardVo vo) {
 		Boolean result = false;
-
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
+		int count = 0;
 		
-			connection = dataSource.getConnection();
-
-			String sql = "insert into board values(null, ?, ?, 0, now(), (select ifnull(max(bo.g_no)+1, 1) from board as bo), 0, 0, ?, ?)";
-
-			pstmt = connection.prepareStatement(sql);
-
-			pstmt.setString(1, bvo.getTitle());
-			pstmt.setString(2, bvo.getContents());
-			pstmt.setLong(3, bvo.getUser_no());
-			pstmt.setBoolean(4, true);
-
-			int count = pstmt.executeUpdate();
-			result = (count == 1);
-
-			stmt = connection.createStatement();
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-
-				if (pstmt != null) {
-					pstmt.close();
-				}
-
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		count = sqlSession.insert("board.insertBoard", vo);
+		
+		if(count == 1)
+		
 		return result;
+		//sqlSession.insert("board.insertBoard", vo);
+		
+//		Boolean result = false;
+//
+//		Connection connection = null;
+//		PreparedStatement pstmt = null;
+//
+//		Statement stmt = null;
+//		ResultSet rs = null;
+//
+//		try {
+//		
+//			connection = dataSource.getConnection();
+//
+//			String sql = "insert into board values(null, ?, ?, 0, now(), (select ifnull(max(bo.g_no)+1, 1) from board as bo), 0, 0, ?, ?)";
+//
+//			pstmt = connection.prepareStatement(sql);
+//
+//			pstmt.setString(1, bvo.getTitle());
+//			pstmt.setString(2, bvo.getContents());
+//			pstmt.setLong(3, bvo.getUser_no());
+//			pstmt.setBoolean(4, true);
+//
+//			int count = pstmt.executeUpdate();
+//			result = (count == 1);
+//
+//			stmt = connection.createStatement();
+//
+//		} catch (SQLException e) {
+//			System.out.println("error:" + e);
+//		} finally {
+//			try {
+//				if (rs != null) {
+//					rs.close();
+//				}
+//				if (stmt != null) {
+//					stmt.close();
+//				}
+//
+//				if (pstmt != null) {
+//					pstmt.close();
+//				}
+//
+//				if (connection != null) {
+//					connection.close();
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		return result;
 	}
 
 //	// DataBase와 연결시키는 객체

@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>mysite</title>
+<title>Board</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link
 	href="${pageContext.servletContext.contextPath }/assets/css/board.css"
@@ -15,7 +15,6 @@
 <script type="text/javascript">
 	function deleteEvent() {
 		return confirm("글을 삭제하시겠습니까?")
-
 	}
 </script>
 <body>
@@ -70,22 +69,22 @@
 				<div class="pager">
 					<ul>
 					<c:if test="${pageNum > 1 }">
-						<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum-1}">◀</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum}">◀</a></li>
 					</c:if>
-						<c:forEach begin='1' end='6' step='1' var='i'>
+						<c:forEach begin='1' end='5' step='1' var='i'>
 							<c:choose>
-								<c:when test="${(firstBoardlist mod 6) eq (i mod 6)}">
+								<c:when test="${(page mod 5) eq (i mod 5)}">
 								<li class="selected">
-										<a href="${pageContext.servletContext.contextPath }/board/${pageNum+i }">${pageNum+i }</a>
+										<a href="${pageContext.servletContext.contextPath }/board?page=${pageNum+i }">${pageNum+i }</a>
 								</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum + i }"> ${pageNum+i }</a></li>	
+									<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum + i }"> ${pageNum+i }</a></li>	
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-	 					<c:if test="${fn:length(list) eq 6}">
-						<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum+6}">▶</a></li>
+	 					<c:if test="${fn:length(list) eq 5}">
+						<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum+6}">▶</a></li>
 						</c:if>
 					</ul>
 				</div>				
@@ -94,7 +93,7 @@
 
 				<div class="bottom">
 					<a
-						href="${pageContext.servletContext.contextPath }/board?a=writeform"
+						href="${pageContext.servletContext.contextPath }/board/writeform"
 						id="new-book">글쓰기</a>
 				</div>
 			</div>
