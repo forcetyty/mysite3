@@ -70,22 +70,22 @@
 				<div class="pager">
 					<ul>
 					<c:if test="${pageNum > 1 }">
-						<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum-1}">◀</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum-1}">◀</a></li>
 					</c:if>
 						<c:forEach begin='1' end='6' step='1' var='i'>
 							<c:choose>
 								<c:when test="${(firstBoardlist mod 6) eq (i mod 6)}">
 								<li class="selected">
-										<a href="${pageContext.servletContext.contextPath }/board?page=${pageNum+i }">${pageNum+i }</a>
+										<a href="${pageContext.servletContext.contextPath }/board/${pageNum+i }">${pageNum+i }</a>
 								</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum+i }">${pageNum+i }</a></li>	
+									<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum + i }"> ${pageNum+i }</a></li>	
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 	 					<c:if test="${fn:length(list) eq 6}">
-						<li><a href="${pageContext.servletContext.contextPath }/board?page=${pageNum+6}">▶</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/board/${pageNum+6}">▶</a></li>
 						</c:if>
 					</ul>
 				</div>				

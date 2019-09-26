@@ -20,12 +20,19 @@ import kr.co.itcen.mysite.vo.UserVo;
 
 @Repository
 public class UserDao {
-	
+
 	@Autowired
-	private SqlSession SqlSession;
+	private SqlSession sqlSession;
 
 	@Autowired
 	private DataSource dataSource;
+
+	public Boolean update(UserVo vo) {
+		Boolean result = false;
+		int count = sqlSession.update("user.update",vo);
+		
+		return count == 1;
+	}
 
 	// Update에서 회원의 정보를 가져오는 기능
 	public UserVo selectUpdate(Long memberNo) {
@@ -130,16 +137,18 @@ public class UserDao {
 	}
 
 	public Boolean insert(UserVo vo) throws UserDaoException {
-		int count = SqlSession.insert("user.insert", vo);
+		int count = sqlSession.insert("user.insert", vo);
+		System.out.println(vo);
 		return count == 1;
 	}
 
 	public UserVo get(Long no) {
-		return null;
+		return sqlSession.selectOne("user.getByNo", no);
+		
 	}
 
 	public UserVo get(UserVo vo) throws UserDaoException {
-		UserVo result = SqlSession.selectOne("user.getByEmailAndPassword1", vo);
+		UserVo result = sqlSession.selectOne("user.getByEmailAndPassword1", vo);
 		return result;
 	}
 
@@ -147,8 +156,8 @@ public class UserDao {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("password", password);
-		
-		UserVo result = SqlSession.selectOne("user.getByEmailAndPassword2", map);
+
+		UserVo result = sqlSession.selectOne("user.getByEmailAndPassword2", map);
 		return result;
 	}
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+<select id="getList" resultType="BoardUserListVo" parameterType="map">
+<![CDATA[
+	select b.no,
+		   b.title,
+		   u.name,
+		   b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'),
+		   b.g_no, b.o_no,
+		   b.depth from user as u, board as b 
+		   where u.no = b.user_no and b.status = 1 
+		   order by b.g_no desc, b.o_no asc limit #{startNum }, #{endNum }
+]]>
+</select>
+
+</mapper>
