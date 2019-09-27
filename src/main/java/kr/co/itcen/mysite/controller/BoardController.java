@@ -74,7 +74,7 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(BoardVo vo) {
 		//객체는 BoardVo
-		boardService
+		//boardService
 		
 		return null;
 	}

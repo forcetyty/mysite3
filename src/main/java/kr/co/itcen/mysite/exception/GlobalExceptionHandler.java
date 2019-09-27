@@ -6,36 +6,32 @@ import java.io.StringWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.sun.istack.internal.logging.Logger;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	//AOP를 실행시키는 모듈 - Advice
 	
-	//기술침투는 Servlet과 Controller에서 발생하는 침투를 막아야 한다.
+	private static final Log Log = LogFactory.getLog( GlobalExceptionHandler.class );
 	
-	@ExceptionHandler(UserDaoException.class)
+	@ExceptionHandler( Exception.class )
 	public void handlerException(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			Exception e) throws Exception{
+		HttpServletRequest request,
+		HttpServletResponse response,
+		Exception e) throws Exception {
 		
-		//1.로깅
+		//1. 로깅
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));
-		System.out.println(errors.toString());
-		
-		// Logger.eroor(errors.toString());
-		
-		//2.안내페이지
+		Log.error(errors.toString());
+
+		//2. 안내 페이지
 		request.setAttribute("uri", request.getRequestURI());
 		request.setAttribute("exception", errors.toString());
-		request.getRequestDispatcher("/WEB-INF/views/error/exception.jsp").forward(request, response);
-		
-		
+		request
+			.getRequestDispatcher("/WEB-INF/views/error/exception.jsp")
+			.forward(request, response);
 	}
-
 }

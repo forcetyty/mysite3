@@ -387,7 +387,7 @@ public class BoardDao {
 		
 		count = sqlSession.insert("board.insertBoard", vo);
 		
-		if(count == 1)
+		//if(count == 1)
 		
 		return result;
 		//sqlSession.insert("board.insertBoard", vo);
